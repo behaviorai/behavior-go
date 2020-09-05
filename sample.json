@@ -1,0 +1,112 @@
+{
+    "version": "0.3.0",
+    "scope": "project",
+    "selectedTree": "7f321519-38f8-4520-a549-ee74d50cc7fe",
+    "trees": [
+      {
+        "version": "0.3.0",
+        "scope": "tree",
+        "id": "7f321519-38f8-4520-a549-ee74d50cc7fe",
+        "title": "A behavior tree",
+        "description": "",
+        "root": null,
+        "properties": {},
+        "nodes": {
+          "dc0288a3-f56b-492c-8962-b3330d87d260": {
+            "id": "dc0288a3-f56b-492c-8962-b3330d87d260",
+            "name": "Wait",
+            "category": "action",
+            "title": "Wait@ms",
+            "description": "等待一待时间",
+            "properties": {
+              "duration": 500
+            },
+            "display": {
+              "x": 288,
+              "y": 0
+            }
+          }
+        },
+        "display": {
+          "camera_x": 960,
+          "camera_y": 403,
+          "camera_z": 1,
+          "x": 0,
+          "y": 0
+        }
+      }
+    ],
+    "custom_nodes": [
+      {
+        "version": "0.3.0",
+        "scope": "node",
+        "name": "Selector",
+        "category": "composite",
+        "title": "Selector",
+        "description": "顺序执行子节点，如果有一个子节点返回success或running，那么父节点马上返回success或running",
+        "properties": {}
+      },
+      {
+        "version": "0.3.0",
+        "scope": "node",
+        "name": "Sequenece",
+        "category": "composite",
+        "title": "Sequenece",
+        "description": "顺序执行子节点，只要有一个子节点返回failed或running，当前节点也返回failed或running",
+        "properties": {}
+      },
+      {
+        "version": "0.3.0",
+        "scope": "node",
+        "name": "Repeater",
+        "category": "decorator",
+        "title": "Repeater",
+        "description": "重复执行子节点，在达到maxLoop之前，一直返回running。当达到maxLoop后，返回success。maxLoop=0表示无限重复",
+        "properties": {
+          "maxLoop": 0
+        }
+      },
+      {
+        "version": "0.3.0",
+        "scope": "node",
+        "name": "Succeeder",
+        "category": "decorator",
+        "title": "Succeeder",
+        "description": "不论子节点返回结果是什么，都返回success",
+        "properties": {}
+      },
+      {
+        "version": "0.3.0",
+        "scope": "node",
+        "name": "UntilFailure",
+        "category": "decorator",
+        "title": "UntilFailure",
+        "description": "重复执行子节点，直到子节点返回failed，此节点会返回success。或者达到maxLoop次后，此节点返回failed",
+        "properties": {
+          "maxLoop": 0
+        }
+      },
+      {
+        "version": "0.3.0",
+        "scope": "node",
+        "name": "UntilSuccess",
+        "category": "decorator",
+        "title": "UntilSuccess",
+        "description": "重复执行子节点，直到子节点返回success，此节点会返回success。或者达到maxLoop次后，此节点返回failed",
+        "properties": {
+          "maxLoop": 0
+        }
+      },
+      {
+        "version": "0.3.0",
+        "scope": "node",
+        "name": "Wait",
+        "category": "action",
+        "title": "Wait@ms",
+        "description": "等待一待时间",
+        "properties": {
+          "duration": 500
+        }
+      }
+    ]
+  }

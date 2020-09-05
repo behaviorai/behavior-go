@@ -1,0 +1,366 @@
+{
+  "name": "y3pp",
+  "description": "",
+  "data": {
+    "version": "0.3.0",
+    "scope": "project",
+    "selectedTree": "7f321519-38f8-4520-a549-ee74d50cc7fe",
+    "trees": [
+      {
+        "version": "0.3.0",
+        "scope": "tree",
+        "id": "a4fd8dbf-2ebb-40f2-8a38-615a620c7209",
+        "title": "A behavior tree",
+        "description": "",
+        "root": null,
+        "properties": {},
+        "nodes": {},
+        "display": {
+          "camera_x": 496,
+          "camera_y": 386.5,
+          "camera_z": 1,
+          "x": 0,
+          "y": 0
+        }
+      },
+      {
+        "version": "0.3.0",
+        "scope": "tree",
+        "id": "7f321519-38f8-4520-a549-ee74d50cc7fe",
+        "title": "robot",
+        "description": "",
+        "root": "6a3e217a-420b-4707-ac11-9177bc8eba30",
+        "properties": {},
+        "nodes": {
+          "6a3e217a-420b-4707-ac11-9177bc8eba30": {
+            "id": "6a3e217a-420b-4707-ac11-9177bc8eba30",
+            "name": "Sequenece",
+            "category": "composite",
+            "title": "Sequenece",
+            "description": "顺序执行子节点，只要有一个子节点返回failed或running，当前节点也返回failed或running",
+            "properties": {},
+            "display": {
+              "x": -180,
+              "y": 132
+            },
+            "children": [
+              "2512e281-6590-4f6e-b1e2-e0b448e6a089",
+              "1c3579f4-2584-4c91-bef3-896e6b8922f8"
+            ]
+          },
+          "2512e281-6590-4f6e-b1e2-e0b448e6a089": {
+            "id": "2512e281-6590-4f6e-b1e2-e0b448e6a089",
+            "name": "WhenLogin",
+            "category": "decorator",
+            "title": "WhenLogin",
+            "description": "WhenLogin",
+            "properties": {},
+            "display": {
+              "x": 12,
+              "y": 48
+            },
+            "child": "d173549f-7a22-4b0c-ae6f-f858a51962ec"
+          },
+          "c50ef019-1f87-4a60-b186-ca3eb0226f08": {
+            "id": "c50ef019-1f87-4a60-b186-ca3eb0226f08",
+            "name": "Login",
+            "category": "action",
+            "title": "Login",
+            "description": "Login",
+            "properties": {
+              "maxPlayTime": 3600,
+              "minPlayTime": 30
+            },
+            "display": {
+              "x": 180,
+              "y": 228
+            }
+          },
+          "1820a30e-e937-4def-a6f3-9eef303d6d33": {
+            "id": "1820a30e-e937-4def-a6f3-9eef303d6d33",
+            "name": "IsNotLogged",
+            "category": "condition",
+            "title": "IsNotLogged",
+            "description": "当不处于login状态时返回success，否则failed",
+            "properties": {},
+            "display": {
+              "x": 180,
+              "y": 132
+            }
+          },
+          "1c3579f4-2584-4c91-bef3-896e6b8922f8": {
+            "id": "1c3579f4-2584-4c91-bef3-896e6b8922f8",
+            "name": "Sequenece",
+            "category": "composite",
+            "title": "Sequenece",
+            "description": "顺序执行子节点，只要有一个子节点返回failed或running，当前节点也返回failed或running",
+            "properties": {},
+            "display": {
+              "x": -12,
+              "y": 180
+            },
+            "children": [
+              "1820a30e-e937-4def-a6f3-9eef303d6d33",
+              "c50ef019-1f87-4a60-b186-ca3eb0226f08"
+            ]
+          },
+          "351bf58b-7009-4546-94cb-26b09fd21d9e": {
+            "id": "351bf58b-7009-4546-94cb-26b09fd21d9e",
+            "name": "FindTarget",
+            "category": "action",
+            "title": "FindTarget",
+            "description": "FindTarget",
+            "properties": {},
+            "display": {
+              "x": 348,
+              "y": 96
+            }
+          },
+          "14ecbb7c-a9cb-4098-aa3d-a131fd423136": {
+            "id": "14ecbb7c-a9cb-4098-aa3d-a131fd423136",
+            "name": "WhenHasTarget",
+            "category": "decorator",
+            "title": "WhenHasTarget",
+            "description": "WhenHasTarget",
+            "properties": {},
+            "display": {
+              "x": 348,
+              "y": -12
+            },
+            "child": "9bb98e44-c03c-4c46-9394-b091dfc0fd21"
+          },
+          "d173549f-7a22-4b0c-ae6f-f858a51962ec": {
+            "id": "d173549f-7a22-4b0c-ae6f-f858a51962ec",
+            "name": "Selector",
+            "category": "composite",
+            "title": "Selector",
+            "description": "顺序执行子节点，如果有一个子节点返回success或running，那么父节点马上返回success或running",
+            "properties": {},
+            "display": {
+              "x": 168,
+              "y": 48
+            },
+            "children": [
+              "14ecbb7c-a9cb-4098-aa3d-a131fd423136",
+              "351bf58b-7009-4546-94cb-26b09fd21d9e"
+            ]
+          },
+          "32212984-68ed-4df5-9978-297fcd9cf0c8": {
+            "id": "32212984-68ed-4df5-9978-297fcd9cf0c8",
+            "name": "Loot",
+            "category": "action",
+            "title": "Loot",
+            "description": "Loot",
+            "properties": {},
+            "display": {
+              "x": 720,
+              "y": -48
+            }
+          },
+          "9bb98e44-c03c-4c46-9394-b091dfc0fd21": {
+            "id": "9bb98e44-c03c-4c46-9394-b091dfc0fd21",
+            "name": "Sequenece",
+            "category": "composite",
+            "title": "Sequenece",
+            "description": "顺序执行子节点，只要有一个子节点返回failed或running，当前节点也返回failed或running",
+            "properties": {},
+            "display": {
+              "x": 528,
+              "y": -12
+            },
+            "children": [
+              "32212984-68ed-4df5-9978-297fcd9cf0c8",
+              "7c1d5e91-8639-4215-847b-c327dbb3e29b"
+            ]
+          },
+          "7c1d5e91-8639-4215-847b-c327dbb3e29b": {
+            "id": "7c1d5e91-8639-4215-847b-c327dbb3e29b",
+            "name": "Logout",
+            "category": "action",
+            "title": "Logout",
+            "description": "Logout",
+            "properties": {},
+            "display": {
+              "x": 720,
+              "y": 0
+            }
+          }
+        },
+        "display": {
+          "camera_x": 763,
+          "camera_y": 272,
+          "camera_z": 1.25,
+          "x": -312,
+          "y": 132
+        }
+      }
+    ],
+    "custom_nodes": [
+      {
+        "version": "0.3.0",
+        "scope": "node",
+        "name": "Selector",
+        "category": "composite",
+        "title": "Selector",
+        "description": "顺序执行子节点，如果有一个子节点返回success或running，那么父节点马上返回success或running",
+        "properties": {}
+      },
+      {
+        "version": "0.3.0",
+        "scope": "node",
+        "name": "Sequenece",
+        "category": "composite",
+        "title": "Sequenece",
+        "description": "顺序执行子节点，只要有一个子节点返回failed或running，当前节点也返回failed或running",
+        "properties": {}
+      },
+      {
+        "version": "0.3.0",
+        "scope": "node",
+        "name": "Repeater",
+        "category": "decorator",
+        "title": "Repeater",
+        "description": "重复执行子节点，在达到maxLoop之前，一直返回running。当达到maxLoop后，返回success。maxLoop=0表示无限重复",
+        "properties": {
+          "maxLoop": 0
+        }
+      },
+      {
+        "version": "0.3.0",
+        "scope": "node",
+        "name": "Succeeder",
+        "category": "decorator",
+        "title": "Succeeder",
+        "description": "不论子节点返回结果是什么，都返回success",
+        "properties": {}
+      },
+      {
+        "version": "0.3.0",
+        "scope": "node",
+        "name": "UntilFailure",
+        "category": "decorator",
+        "title": "UntilFailure",
+        "description": "重复执行子节点，直到子节点返回failed，此节点会返回success。或者达到maxLoop次后，此节点返回failed",
+        "properties": {
+          "maxLoop": 0
+        }
+      },
+      {
+        "version": "0.3.0",
+        "scope": "node",
+        "name": "UntilSuccess",
+        "category": "decorator",
+        "title": "UntilSuccess",
+        "description": "重复执行子节点，直到子节点返回success，此节点会返回success。或者达到maxLoop次后，此节点返回failed",
+        "properties": {
+          "maxLoop": 0
+        }
+      },
+      {
+        "version": "0.3.0",
+        "scope": "node",
+        "name": "Wait",
+        "category": "action",
+        "title": "Wait@ms",
+        "description": "等待一待时间",
+        "properties": {
+          "duration": 500
+        }
+      },
+      {
+        "version": "0.3.0",
+        "scope": "node",
+        "name": "DecWhenLogin",
+        "category": "decorator",
+        "title": "DecWhenLogin",
+        "description": "DecWhenLogin",
+        "properties": {}
+      },
+      {
+        "version": "0.3.0",
+        "scope": "node",
+        "name": "WhenHasTarget",
+        "category": "decorator",
+        "title": "WhenHasTarget",
+        "description": "WhenHasTarget",
+        "properties": {}
+      },
+      {
+        "version": "0.3.0",
+        "scope": "node",
+        "name": "WhenLogin",
+        "category": "decorator",
+        "title": "WhenLogin",
+        "description": "WhenLogin",
+        "properties": {}
+      },
+      {
+        "version": "0.3.0",
+        "scope": "node",
+        "name": "WhenNotLogin",
+        "category": "decorator",
+        "title": "WhenNotLogin",
+        "description": "WhenNotLogin",
+        "properties": {}
+      },
+      {
+        "version": "0.3.0",
+        "scope": "node",
+        "name": "FindTarget",
+        "category": "action",
+        "title": "FindTarget",
+        "description": "FindTarget",
+        "properties": {}
+      },
+      {
+        "version": "0.3.0",
+        "scope": "node",
+        "name": "Logout",
+        "category": "action",
+        "title": "Logout",
+        "description": "Logout",
+        "properties": {}
+      },
+      {
+        "version": "0.3.0",
+        "scope": "node",
+        "name": "Loot",
+        "category": "action",
+        "title": "Loot",
+        "description": "Loot",
+        "properties": {}
+      },
+      {
+        "version": "0.3.0",
+        "scope": "node",
+        "name": "IsLogged",
+        "category": "condition",
+        "title": "IsLogged",
+        "description": "当处于login状态时返回success，否则failed",
+        "properties": {}
+      },
+      {
+        "version": "0.3.0",
+        "scope": "node",
+        "name": "IsNotLogged",
+        "category": "condition",
+        "title": "IsNotLogged",
+        "description": "当不处于login状态时返回success，否则failed",
+        "properties": {}
+      },
+      {
+        "version": "0.3.0",
+        "scope": "node",
+        "name": "Login",
+        "category": "action",
+        "title": "Login",
+        "description": "Login",
+        "properties": {
+          "maxPlayTime": 3600,
+          "minPlayTime": 30
+        }
+      }
+    ]
+  },
+  "path": "Z:\\home\\billy\\project\\cpp\\y3pp\\gosrc\\bhtree\\y3pp.b3"
+}
