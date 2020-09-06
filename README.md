@@ -2,7 +2,7 @@
 
 Full feature behavior tree implemented with golang, with support for custom nodes.
 
-The author is not english native speaker, thus you are welcome to add english comments and wiki.
+The author is not native english speaker, thus you are welcome to add english comments and wiki.
 
 ## Usage
 
@@ -10,8 +10,8 @@ Custom `Node`(`action`|`composite`|`decorator`|`condition`) should be registered
 
 TODO:
 
-- [x]sample
-- [x]doc
+-   [x]sample
+-   [x]doc
 
 ## editor recommended:
 
