@@ -2,6 +2,7 @@ package behavior
 
 import (
 	"github.com/billyplus/behavior/config"
+	"github.com/billyplus/behavior/log"
 )
 
 // Node 用来表示树的一个节点
@@ -13,6 +14,7 @@ type Node interface {
 	// Exit 每次完成节点时触发
 	Exit(bb *Blackboard, memo Memory)
 	AddChild(n *Wrapper)
+	EnableDebug()
 }
 
 // type NodeWrapper interface {
@@ -31,6 +33,7 @@ var (
 )
 
 type BaseNode struct {
+	debug bool
 }
 
 func (node *BaseNode) CreateMemo() Memory {
@@ -52,6 +55,10 @@ func (node *BaseNode) Exit(bb *Blackboard, memo Memory) {
 }
 
 func (node *BaseNode) AddChild(n *Wrapper) {
+}
+
+func (node *BaseNode) EnableDebug() {
+	node.debug = true
 }
 
 type Wrapper struct {
@@ -81,6 +88,9 @@ func (wrapper *Wrapper) Execute(bb *Blackboard) BehaviorStatus {
 	}
 	if st == IsRunning {
 		status := wrapper.Node.Tick(bb, memo)
+		if debug {
+			log.Info("tick", zap.String("node", wrapper.Node.))
+		}
 		if status != StatusRunning {
 			wrapper.Node.Exit(bb, memo)
 			// save running state

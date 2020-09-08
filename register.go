@@ -11,6 +11,7 @@ type nodeTypeMap map[string]reflect.Type
 
 var (
 	typeMap = make(map[string]reflect.Type)
+	debug   = false
 )
 
 // Register 注册一个新的node类型
@@ -25,6 +26,10 @@ func createNodeByName(name string) (Node, error) {
 	if nt, ok := typeMap[name]; ok {
 		n := reflect.New(nt).Interface()
 		// log.Logger.Debug().Str("type", nt.Name()).Interface("value", n).Msg("createNodeByName")
+		node := n.(Node)
+		if debug {
+			node.EnableDebug()
+		}
 		return n.(Node), nil
 	}
 	return nil, errors.Errorf("node type not found for '%s'", name)
