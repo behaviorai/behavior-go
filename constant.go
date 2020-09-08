@@ -11,6 +11,19 @@ const (
 	StatusRunning
 )
 
+var (
+	statusStr = []string{
+		StatusNone:    "none",
+		StatusSuccess: "success",
+		StatusFailed:  "failed",
+		StatusRunning: "running",
+	}
+)
+
+func (s BehaviorStatus) String() string {
+	return statusStr[s]
+}
+
 // NodeStatus status for node
 type NodeStatus int
 

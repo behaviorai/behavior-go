@@ -72,6 +72,7 @@ func NewBehaviorManager(cfg *config.BH3Project) (*BehaviorManager, error) {
 			}
 			nw := &wraplist[i]
 			nw.Node = treenode
+			nw.name = node.Name
 			nw.index = i
 
 			// set root node

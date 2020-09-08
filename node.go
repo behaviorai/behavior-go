@@ -1,8 +1,9 @@
 package behavior
 
 import (
+	"strconv"
+
 	"github.com/billyplus/behavior/config"
-	"github.com/billyplus/behavior/log"
 )
 
 // Node 用来表示树的一个节点
@@ -14,7 +15,6 @@ type Node interface {
 	// Exit 每次完成节点时触发
 	Exit(bb *Blackboard, memo Memory)
 	AddChild(n *Wrapper)
-	EnableDebug()
 }
 
 // type NodeWrapper interface {
@@ -33,7 +33,6 @@ var (
 )
 
 type BaseNode struct {
-	debug bool
 }
 
 func (node *BaseNode) CreateMemo() Memory {
@@ -57,13 +56,14 @@ func (node *BaseNode) Exit(bb *Blackboard, memo Memory) {
 func (node *BaseNode) AddChild(n *Wrapper) {
 }
 
-func (node *BaseNode) EnableDebug() {
-	node.debug = true
-}
-
 type Wrapper struct {
 	Node
+	name  string
 	index int
+}
+
+func (w *Wrapper) String() string {
+	return strconv.Itoa(w.index) + "-" + w.name
 }
 
 const (
@@ -83,17 +83,23 @@ func (wrapper *Wrapper) Execute(bb *Blackboard) BehaviorStatus {
 
 	if st != IsRunning {
 		wrapper.Node.Enter(bb, memo)
+		if logger != nil {
+			logger.Info("Enter node=" + wrapper.String())
+		}
 		st = IsRunning
 		memo.SaveStatus(st)
 	}
 	if st == IsRunning {
 		status := wrapper.Node.Tick(bb, memo)
-		if debug {
-			log.Info("tick", zap.String("node", wrapper.Node.))
+		if logger != nil {
+			logger.Info("Tick node=" + wrapper.String() + " status=" + status.String())
 		}
 		if status != StatusRunning {
 			wrapper.Node.Exit(bb, memo)
 			// save running state
+			if logger != nil {
+				logger.Info("Exit node=" + wrapper.String())
+			}
 			memo.SaveStatus(IsReady)
 		}
 		return status
@@ -109,6 +115,9 @@ func (wrapper *Wrapper) Stop(bb *Blackboard) {
 	if st == IsRunning {
 		memo := bb.GetNodeMemo(wrapper.index)
 		wrapper.Node.Exit(bb, memo)
+		if logger != nil {
+			logger.Info("Exit node=" + wrapper.String())
+		}
 		// save running state
 		memo.SaveStatus(IsReady)
 	}

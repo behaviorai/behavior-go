@@ -1,8 +1,20 @@
 package behavior
 
-import "github.com/billyplus/behavior/log"
+var (
+	logger Logger
+)
 
-func SetLogger(l log.Logger) {
-	log.SetLogger(l)
-	debug = true
+type Logger interface {
+	Info(msg string)
 }
+
+func SetLogger(l Logger) {
+	logger = l
+}
+
+// func Info(msg string, opt ...interface{}) {
+// 	if l == nil {
+// 		return
+// 	}
+// 	l.Info(msg, opt)
+// }
