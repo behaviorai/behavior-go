@@ -84,7 +84,7 @@ func (wrapper *Wrapper) Execute(bb *Blackboard) BehaviorStatus {
 	if st != IsRunning {
 		wrapper.Node.Enter(bb, memo)
 		if logger != nil {
-			logger.Info("Enter node=" + wrapper.String())
+			logger.Println("Enter node=" + wrapper.String())
 		}
 		st = IsRunning
 		memo.SaveStatus(st)
@@ -92,13 +92,13 @@ func (wrapper *Wrapper) Execute(bb *Blackboard) BehaviorStatus {
 	if st == IsRunning {
 		status := wrapper.Node.Tick(bb, memo)
 		if logger != nil {
-			logger.Info("Tick node=" + wrapper.String() + " status=" + status.String())
+			logger.Println("Tick node=" + wrapper.String() + " status=" + status.String())
 		}
 		if status != StatusRunning {
 			wrapper.Node.Exit(bb, memo)
 			// save running state
 			if logger != nil {
-				logger.Info("Exit node=" + wrapper.String())
+				logger.Println("Exit node=" + wrapper.String())
 			}
 			memo.SaveStatus(IsReady)
 		}
@@ -116,7 +116,7 @@ func (wrapper *Wrapper) Stop(bb *Blackboard) {
 		memo := bb.GetNodeMemo(wrapper.index)
 		wrapper.Node.Exit(bb, memo)
 		if logger != nil {
-			logger.Info("Exit node=" + wrapper.String())
+			logger.Println("Exit node=" + wrapper.String())
 		}
 		// save running state
 		memo.SaveStatus(IsReady)

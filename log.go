@@ -5,7 +5,7 @@ var (
 )
 
 type Logger interface {
-	Info(msg string)
+	Println(v ...interface{})
 }
 
 func SetLogger(l Logger) {
