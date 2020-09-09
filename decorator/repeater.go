@@ -30,7 +30,7 @@ func (node *Repeater) Initialize(cfg *config.BH3Node) error {
 	if err := node.Decorator.Initialize(cfg); err != nil {
 		return err
 	}
-	node.maxLoop = cfg.GetInt(tagMaxLoop)
+	node.maxLoop = cfg.GetInt(tagLoopTime)
 	return nil
 }
 

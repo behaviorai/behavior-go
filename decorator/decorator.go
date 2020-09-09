@@ -6,8 +6,7 @@ import (
 )
 
 const (
-	tagMaxLoop  = "maxLoop"
-	tagLoopTime = "time"
+	tagLoopTime = "times"
 )
 
 type Decorator struct {

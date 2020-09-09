@@ -13,14 +13,14 @@ type UntilFailure struct {
 
 type ufMemo struct {
 	behavior.BaseMemo
-	loopTime int
+	times int
 }
 
 // CreateMemo create memo for node
 func (node *UntilFailure) CreateMemo() behavior.Memory {
 	m := &ufMemo{
 		BaseMemo: behavior.BaseMemo{},
-		loopTime: 0,
+		times:    0,
 	}
 	return m
 }
@@ -30,7 +30,7 @@ func (node *UntilFailure) Initialize(cfg *config.BH3Node) error {
 	if err := node.Decorator.Initialize(cfg); err != nil {
 		return err
 	}
-	node.maxLoop = cfg.GetInt(tagMaxLoop)
+	node.maxLoop = cfg.GetInt(tagLoopTime)
 	return nil
 }
 
@@ -42,10 +42,10 @@ func (node *UntilFailure) Tick(bb *behavior.Blackboard, memo behavior.Memory) be
 	}
 	rmemo := memo.(*ufMemo)
 
-	if node.maxLoop <= 0 || rmemo.loopTime < node.maxLoop {
+	if node.maxLoop <= 0 || rmemo.times < node.maxLoop {
 		status := child.Execute(bb)
 		// save time
-		rmemo.loopTime++
+		rmemo.times++
 
 		// return success only when status is failed
 		if status == behavior.StatusFailed {
@@ -59,5 +59,5 @@ func (node *UntilFailure) Tick(bb *behavior.Blackboard, memo behavior.Memory) be
 // Enter enter node
 func (node *UntilFailure) Enter(bb *behavior.Blackboard, memo behavior.Memory) {
 	rmemo := memo.(*ufMemo)
-	rmemo.loopTime = 0
+	rmemo.times = 0
 }
