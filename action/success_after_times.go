@@ -42,7 +42,7 @@ func (node *SuccessAfterTimes) Tick(bb *behavior.Blackboard, imemo behavior.Memo
 		return behavior.StatusSuccess
 	}
 	memo.runTime = runned + 1
-	return behavior.StatusRunning
+	return behavior.StatusFailed
 }
 
 // Enter enter node
