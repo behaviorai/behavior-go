@@ -2,19 +2,33 @@ package bench
 
 import (
 	"fmt"
+	"io/ioutil"
 	"testing"
 
 	"github.com/billyplus/behavior"
-	"github.com/billyplus/behavior/action"
 	"github.com/billyplus/behavior/config"
 	_ "github.com/billyplus/behavior/loader"
 
 	"github.com/stretchr/testify/suite"
 )
 
-func BenchmarkAction(b *testing.B) {
-	behavior.Register("SuccessAfterTimes", &action.SuccessAfterTimes{})
-	bh3prj, err := config.ParseB3File(proj)
+func BenchmarkRawAction(b *testing.B) {
+	total := 0
+	for i := 0; i < b.N; i++ {
+		for j := 0; j < 10; j++ {
+			sum := 0
+			for k := 0; k < 1000; k++ {
+				sum += k
+			}
+			total = sum
+		}
+	}
+	_ = total
+}
+
+func BenchmarkBehaviorAction(b *testing.B) {
+	behavior.Register("CalcAction", &CalcAction{})
+	bh3prj, err := config.ParseB3File(loadPrj())
 	if err != nil {
 		fmt.Println(err)
 		return
@@ -36,24 +50,20 @@ func BenchmarkAction(b *testing.B) {
 
 	bb := tree.NewBlackboard()
 
-	round := 0
+	// round := 0
 	status := behavior.StatusRunning
 	for i := 0; i < b.N; i++ {
-
 		for {
 			status = tree.Tick(bb)
-			// fmt.Println("round ", round)
-			round++
+			// round++
 			if status == behavior.StatusSuccess {
 				break
-			} else if status == behavior.StatusFailed {
-				b.Fatal()
 			}
-			if round > 100 {
-				b.Fatal()
-			}
+			// if round > 1000 {
+			// 	b.Fatal()
+			// }
 		}
-		round = 0
+		// round = 0
 	}
 
 }
@@ -67,8 +77,8 @@ func (suite *projTestSuite) SetupSuite() {
 }
 
 func (suite *projTestSuite) TestParseProj() {
-	behavior.Register("SuccessAfterTimes", &action.SuccessAfterTimes{})
-	bh3prj, err := config.ParseB3File(proj)
+	// behavior.Register("SuccessAfterTimes", &action.SuccessAfterTimes{})
+	bh3prj, err := config.ParseB3File(loadPrj())
 	suite.Nil(err, "parse ph3 project from []byte")
 
 	mgr, err := behavior.NewBehaviorManager(&bh3prj.Data)
@@ -82,6 +92,14 @@ func (suite *projTestSuite) TestParseProj() {
 // func TestBehavior3Proj(t *testing.T) {
 // 	suite.Run(t, &projTestSuite{})
 // }
+
+func loadPrj() []byte {
+	data, err := ioutil.ReadFile("./bench.b3")
+	if err != nil {
+		panic(err)
+	}
+	return data
+}
 
 var proj = []byte(`
 {
