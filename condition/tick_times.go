@@ -1,6 +1,8 @@
 package condition
 
 import (
+	"fmt"
+
 	"github.com/billyplus/behavior"
 	"github.com/billyplus/behavior/config"
 	// "y3pp/log"
@@ -40,7 +42,7 @@ func (node *TickTimes) Tick(bb *behavior.Blackboard, imemo behavior.Memory) beha
 
 	memo := imemo.(*satMemo)
 	memo.runTime++
-	// fmt.Println("run time=", memo.runTime)
+	fmt.Println("run time=", memo.runTime)
 	if memo.runTime >= node.times {
 		memo.runTime = 0
 		return behavior.StatusSuccess
