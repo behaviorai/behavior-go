@@ -4,9 +4,9 @@ import (
 	"github.com/billyplus/behavior"
 	"github.com/billyplus/behavior/action"
 	"github.com/billyplus/behavior/composite"
+	"github.com/billyplus/behavior/condition"
 	"github.com/billyplus/behavior/config"
 	"github.com/billyplus/behavior/decorator"
-	"github.com/billyplus/behavior/condition"
 )
 
 func init() {
@@ -26,9 +26,9 @@ func init() {
 	// action
 	behavior.Register("Wait", &action.Wait{})
 	behavior.Register("WaitRandom", &action.WaitRandom{})
+	behavior.Register("WaitFailure", &action.WaitFailure{})
 	// condition
 	behavior.Register("TickTimes", &condition.TickTimes{})
-
 
 }
 
