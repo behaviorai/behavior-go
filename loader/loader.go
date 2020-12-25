@@ -15,6 +15,8 @@ func init() {
 	behavior.Register("RandomSelector", &composite.RandomSelector{})
 	behavior.Register("Sequenece", &composite.Sequenece{})
 	behavior.Register("RandomSequence", &composite.RandomSequence{})
+	behavior.Register("ParallelSequence", &composite.ParallelSequence{})
+	behavior.Register("ParallelSelector", &composite.ParallelSelector{})
 	// decorator
 	behavior.Register("Repeater", &decorator.Repeater{})
 	behavior.Register("Inverter", &decorator.Inverter{})

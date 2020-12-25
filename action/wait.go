@@ -8,10 +8,6 @@ import (
 	// "y3pp/log"
 )
 
-const (
-	tagEndTime = "end"
-)
-
 // Wait 等待一段时间，然后返回Success
 type Wait struct {
 	Action
