@@ -81,24 +81,32 @@ func ParseB3File(data []byte) (*B3File, error) {
 // 	return &proj, nil
 // }
 
+func (node *BH3Node) GetFloat64(name string) float64 {
+	v := node.Properties[name]
+	if v == nil {
+		return 0
+	}
+	return v.(float64)
+}
+
 func (node *BH3Node) GetInt(name string) int {
-	return int((node.Properties[name]).(float64))
+	return int(node.GetFloat64(name))
 }
 
 func (node *BH3Node) GetInt32(name string) int32 {
-	return int32((node.Properties[name]).(float64))
+	return int32(node.GetFloat64(name))
 }
 
 func (node *BH3Node) GetInt64(name string) int64 {
-	return int64((node.Properties[name]).(float64))
+	return int64(node.GetFloat64(name))
 }
 
 func (node *BH3Node) GetUint32(name string) uint32 {
-	return uint32((node.Properties[name]).(float64))
+	return uint32(node.GetFloat64(name))
 }
 
 func (node *BH3Node) GetUint64(name string) uint64 {
-	return uint64((node.Properties[name]).(float64))
+	return uint64(node.GetFloat64(name))
 }
 
 func (node *BH3Node) GetString(name string) string {
