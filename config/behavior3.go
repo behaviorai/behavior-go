@@ -2,7 +2,10 @@ package config
 
 import (
 	"encoding/json"
+	"fmt"
 	"io/ioutil"
+	"strconv"
+	"strings"
 )
 
 // BH3Node behavior3的节点
@@ -104,4 +107,38 @@ func (node *BH3Node) GetString(name string) string {
 
 func (node *BH3Node) GetBool(name string) bool {
 	return (node.Properties[name]).(bool)
+}
+
+func (node *BH3Node) GetInt32s(name string) []int32 {
+	var ret []int32
+	v := (node.Properties[name]).(string)
+	if v == "" {
+		return nil
+	}
+	lst := strings.Split(v, ",")
+	for _, val := range lst {
+		n, err := strconv.Atoi(val)
+		if err != nil {
+			panic(fmt.Errorf("failed to unmarshal int32s: %v", err))
+		}
+		ret = append(ret, int32(n))
+	}
+	return ret
+}
+
+func (node *BH3Node) GetInt64s(name string) []int64 {
+	var ret []int64
+	v := (node.Properties[name]).(string)
+	if v == "" {
+		return nil
+	}
+	lst := strings.Split(v, ",")
+	for _, val := range lst {
+		n, err := strconv.ParseInt(val, 10, 64)
+		if err != nil {
+			panic(fmt.Errorf("failed to unmarshal int32s: %v", err))
+		}
+		ret = append(ret, n)
+	}
+	return ret
 }
