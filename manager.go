@@ -138,7 +138,14 @@ func NewBehaviorManager(cfg *config.BH3Project) (*BehaviorManager, error) {
 				}
 				if !found {
 					// sub tree
-					subt := trees[node.Child]
+					childnode := treenodemap[node.Child]
+					if childnode == nil {
+						return nil, errors.Errorf("unknown child node guid '%s'", node.Child)
+					}
+					subt := trees[childnode.Name]
+					if subt == nil {
+						return nil, errors.Errorf("unknown tree guid '%s'", childnode.Name)
+					}
 					for childindex, child := range nodelist {
 						if child.ID == subt.Root {
 							childwr := &wraplist[childindex]

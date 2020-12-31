@@ -39,5 +39,5 @@ func (node *Composite) String() string {
 		lst = append(lst, n.String())
 	}
 
-	return fmt.Sprintf(`{%s}`, strings.Join(lst, ","))
+	return fmt.Sprintf(`{%s}`, strings.Join(lst, ", "))
 }

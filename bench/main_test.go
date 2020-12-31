@@ -86,12 +86,16 @@ func (suite *projTestSuite) TestParseProj() {
 
 	tree := mgr.SelectBehaviorTree("single")
 	suite.NotNil(tree, "select tree")
-	suite.Equal("{Sequenece: {CalcAction: Action,TickTimes: Condition}}", tree.String(), "check tree string")
+	suite.Equal("{Sequenece: {CalcAction: Action, TickTimes: Condition, UntilFailure: {Wait: Action}}}",
+		tree.String(),
+		"check tree string")
 
 	parent := mgr.SelectBehaviorTree("parent")
 	suite.NotNil(parent, "select tree")
 
-	suite.Equal("{Selector: {Sequenece: {CalcAction: Action,TickTimes: Condition}}}", parent.String(), "check parent string")
+	suite.Equal("{Selector: {Sequenece: {CalcAction: Action, TickTimes: Condition, UntilFailure: {Wait: Action}}, Repeater: {CalcAction: Action}}}",
+		parent.String(),
+		"check parent string")
 }
 
 func TestBehavior3Proj(t *testing.T) {
