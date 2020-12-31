@@ -1,6 +1,8 @@
 package decorator
 
 import (
+	"fmt"
+
 	"github.com/billyplus/behavior"
 	"github.com/billyplus/behavior/config"
 )
@@ -32,5 +34,8 @@ func (node *Decorator) GetChild() *behavior.Wrapper {
 // Exit exit from running
 func (node *Decorator) Exit(bb *behavior.Blackboard, memo behavior.Memory) {
 	node.child.Stop(bb)
-	return
+}
+
+func (node *Decorator) String() string {
+	return fmt.Sprintf(`{%s}`, node.child.String())
 }

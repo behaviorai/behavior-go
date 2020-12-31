@@ -1,0 +1,4 @@
+{
+    "terminal.integrated.automationShell.windows": "wsl",
+    "terminal.integrated.shell.windows": "wsl.exe"
+}

@@ -16,3 +16,7 @@ type Action struct {
 func (node *Action) Initialize(cfg *config.BH3Node) error {
 	return node.BaseNode.Initialize(cfg)
 }
+
+func (node *Action) String() string {
+	return "Action"
+}

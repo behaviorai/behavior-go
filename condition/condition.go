@@ -6,3 +6,7 @@ import "github.com/billyplus/behavior"
 type Condition struct {
 	behavior.BaseNode
 }
+
+func (node *Condition) String() string {
+	return "Condition"
+}

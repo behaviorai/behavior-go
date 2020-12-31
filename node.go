@@ -1,7 +1,7 @@
 package behavior
 
 import (
-	"strconv"
+	"fmt"
 
 	"github.com/billyplus/behavior/config"
 )
@@ -15,6 +15,7 @@ type Node interface {
 	// Exit 每次完成节点时触发
 	Exit(bb *Blackboard, memo Memory)
 	AddChild(n *Wrapper)
+	String() string
 }
 
 // type NodeWrapper interface {
@@ -56,6 +57,10 @@ func (node *BaseNode) Exit(bb *Blackboard, memo Memory) {
 func (node *BaseNode) AddChild(n *Wrapper) {
 }
 
+func (node *BaseNode) String() string {
+	return "BaseNode"
+}
+
 type Wrapper struct {
 	Node
 	name  string
@@ -63,12 +68,9 @@ type Wrapper struct {
 }
 
 func (w *Wrapper) String() string {
-	return strconv.Itoa(w.index) + "." + w.name
-}
 
-const (
-	tagRunning = "running"
-)
+	return fmt.Sprintf(`%s: %s`, w.name, w.Node.String())
+}
 
 // Execute execute node
 func (wrapper *Wrapper) Execute(bb *Blackboard) BehaviorStatus {

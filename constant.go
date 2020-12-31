@@ -43,7 +43,3 @@ const (
 	CateAction    = "action"
 	CateCondition = "condition"
 )
-
-const (
-	tagRunningChild = "running"
-)

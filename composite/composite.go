@@ -1,16 +1,15 @@
 package composite
 
 import (
+	"fmt"
+	"strings"
+
 	"github.com/billyplus/behavior"
 	"github.com/billyplus/behavior/config"
 )
 
 var (
 	_ behavior.Node = &Composite{}
-)
-
-const (
-	tagRunningNode = "runningNode"
 )
 
 type Composite struct {
@@ -32,4 +31,13 @@ func (node *Composite) Initialize(cfg *config.BH3Node) error {
 
 func (node *Composite) CountOfChildren() int {
 	return len(node.children)
+}
+
+func (node *Composite) String() string {
+	var lst []string
+	for _, n := range node.children {
+		lst = append(lst, n.String())
+	}
+
+	return fmt.Sprintf(`{%s}`, strings.Join(lst, ","))
 }

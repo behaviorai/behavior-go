@@ -10,63 +10,110 @@ import (
 func NewBehaviorManager(cfg *config.BH3Project) (*BehaviorManager, error) {
 	mgr := &BehaviorManager{
 		treelist: make(map[string]*BehaviorTree, len(cfg.Trees)),
+		arrTree:  make([]BehaviorTree, len(cfg.Trees)),
 	}
 	// nodeid := make(map[string]int)
 	// roots := make(map[string]int, len(cfg.Trees))
-	trees := make(map[string]config.BH3Tree, len(cfg.Trees))
-	for _, tcfg := range cfg.Trees {
+	trees := make(map[string]*config.BH3Tree, len(cfg.Trees))
+	allNode := make(map[string]*config.BH3Node)
+	for idx, tcfg := range cfg.Trees {
 		trees[tcfg.ID] = tcfg
+		mgr.arrTree[idx].id = tcfg.ID
+		mgr.treelist[tcfg.Title] = &mgr.arrTree[idx]
+		// collect all node
+		for _, tnode := range tcfg.Nodes {
+			allNode[tnode.ID] = tnode
+		}
 	}
+	var collectTreeNode func(tcfg *config.BH3Tree)
+
 	// index := 0
 	for _, tcfg := range cfg.Trees {
 		// generate index
-		guidlist := make(map[string]int)
-		nodelist := make([]config.BH3Node, 0)
-		subtreelist := make([]string, 0)
-		subtreelist = append(subtreelist, tcfg.ID)
+		// guidlist := make(map[string]int)
+		nodemap := make(map[string]*config.BH3Node)
+		visited := make(map[string]struct{})
+		treenodemap := make(map[string]*config.BH3Node)
+		// subtreelist := make([]string, 0)
+		// subtreelist = append(subtreelist, tcfg.ID)
 
-		for subindex := 0; ; {
-			if subindex >= len(subtreelist) {
-				break
+		collectTreeNode = func(treecfg *config.BH3Tree) {
+			if _, ok := visited[treecfg.ID]; ok {
+				return
 			}
-			subtreeid := subtreelist[subindex]
-			tcfg := trees[subtreeid]
-
-			for guid, cfg := range tcfg.Nodes {
-				if _, ok := guidlist[guid]; !ok {
-					guidlist[guid] = 0
-					nodelist = append(nodelist, cfg)
+			visited[treecfg.ID] = struct{}{}
+			for _, tnode := range treecfg.Nodes {
+				if ncfg, ok := trees[tnode.Name]; ok {
+					// is subtree
+					treenodemap[tnode.ID] = tnode
+					collectTreeNode(ncfg)
+				} else if _, ok := nodemap[tnode.ID]; !ok {
+					nodemap[tnode.ID] = tnode
 				}
 			}
-			for _, node := range tcfg.Nodes {
-				if len(node.Children) > 0 {
-					for _, childid := range node.Children {
-						if _, ok := guidlist[childid]; !ok {
-							// 是个subtree
-							guidlist[childid] = 0
-							subtreelist = append(subtreelist, childid)
-						}
-					}
-				}
-				if len(node.Child) > 0 {
-					if _, ok := guidlist[node.Child]; !ok {
-						// 是个subtree
-						guidlist[node.Child] = 0
-						subtreelist = append(subtreelist, node.Child)
-					}
-				}
-			}
-			subindex++
 		}
 
-		tree := &BehaviorTree{}
-		mgr.treelist[tcfg.Title] = tree
+		collectTreeNode(tcfg)
+
+		// for subindex := 0; ; {
+		// 	if subindex >= len(subtreelist) {
+		// 		break
+		// 	}
+		// 	subtreeid := subtreelist[subindex]
+		// 	tcfg := trees[subtreeid]
+
+		// 	for guid, cfg := range tcfg.Nodes {
+		// 		if _, ok := guidlist[guid]; !ok {
+		// 			guidlist[guid] = 0
+		// 			nodelist = append(nodelist, cfg)
+		// 		}
+		// 	}
+		// 	for _, node := range tcfg.Nodes {
+		// 		if len(node.Children) > 0 {
+		// 			for _, childid := range node.Children {
+		// 				if _, ok := trees[childid]; ok {
+		// 					// 是个subtree
+		// 					// guidlist[childid] = 0
+		// 					subtreelist = append(subtreelist, childid)
+		// 				}
+		// 			}
+		// 		}
+		// 		if len(node.Child) > 0 {
+		// 			if _, ok := trees[node.Child]; ok {
+		// 				// 是个subtree
+		// 				// guidlist[node.Child] = 0
+		// 				subtreelist = append(subtreelist, node.Child)
+		// 			}
+		// 		}
+		// 	}
+		// 	subindex++
+		// }
+		nodelist := make([]*config.BH3Node, 0, len(nodemap))
+		for _, n := range nodemap {
+			nodelist = append(nodelist, n)
+		}
+
+		tree := mgr.treelist[tcfg.Title]
 		wraplist := make([]Wrapper, len(nodelist))
 
 		for i, node := range nodelist {
-
+			var treenode Node
+			var err error
+			// if _, ok := trees[node.Name]; ok {
+			// 	// 是个subtree
+			// 	for idx := range mgr.arrTree {
+			// 		t := &mgr.arrTree[idx]
+			// 		if t.id == node.Name {
+			// 			treenode = t
+			// 		}
+			// 	}
+			// 	if treenode == nil {
+			// 		return nil, errors.Errorf("subtree missing: %s", node.Name)
+			// 	}
+			// } else {
+			// }
 			// fatory function for node
-			treenode, err := createNodeByName(node.Name)
+			treenode, err = createNodeByName(node.Name)
 			if err != nil {
 				return nil, err
 			}
@@ -118,7 +165,14 @@ func NewBehaviorManager(cfg *config.BH3Project) (*BehaviorManager, error) {
 					}
 					if !found {
 						// sub tree
-						subt := trees[childguid]
+						childnode := treenodemap[childguid]
+						if childnode == nil {
+							return nil, errors.Errorf("unknown child node guid '%s'", childguid)
+						}
+						subt := trees[childnode.Name]
+						if subt == nil {
+							return nil, errors.Errorf("unknown tree guid '%s'", childnode.Name)
+						}
 						for childindex, child := range nodelist {
 							if child.ID == subt.Root {
 								childwr := &wraplist[childindex]
@@ -128,14 +182,14 @@ func NewBehaviorManager(cfg *config.BH3Project) (*BehaviorManager, error) {
 						}
 					}
 					if !found {
-						return nil, errors.Errorf("unknow child guid '%s'", childguid)
+						return nil, errors.Errorf("unknown child guid '%s'", childguid)
 
 					}
 				}
 			}
 
 			// Initialize treenode when finish adding children
-			if err = treenode.Initialize(&node); err != nil {
+			if err = treenode.Initialize(node); err != nil {
 				return nil, err
 			}
 
@@ -235,7 +289,7 @@ func NewBehaviorManager(cfg *config.BH3Project) (*BehaviorManager, error) {
 
 type BehaviorManager struct {
 	treelist map[string]*BehaviorTree
-	// nodelist []Wrapper
+	arrTree  []BehaviorTree
 }
 
 func (mgr *BehaviorManager) SelectBehaviorTree(name string) *BehaviorTree {

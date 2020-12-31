@@ -1,5 +1,7 @@
 package behavior
 
+import "fmt"
+
 // "y3pp/log"
 
 type BehaviorTree struct {
@@ -7,6 +9,10 @@ type BehaviorTree struct {
 	title    string
 	root     *Wrapper
 	nodelist []Wrapper
+}
+
+func (tree *BehaviorTree) String() string {
+	return fmt.Sprintf("{%s}", tree.root.String())
 }
 
 func (tree *BehaviorTree) Tick(bb *Blackboard) BehaviorStatus {

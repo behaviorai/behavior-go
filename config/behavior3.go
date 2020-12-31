@@ -28,14 +28,14 @@ type BH3Tree struct {
 	Description string                 `json:"description"`
 	Root        string                 `json:"root"`
 	Properties  map[string]interface{} `json:"properties"`
-	Nodes       map[string]BH3Node     `json:"nodes"`
+	Nodes       map[string]*BH3Node    `json:"nodes"`
 }
 
 // BH3Project behavior3的工程json类型
 type BH3Project struct {
-	SelectedTree string    `json:"selectedTree"`
-	Scope        string    `json:"scope"`
-	Trees        []BH3Tree `json:"trees"`
+	SelectedTree string     `json:"selectedTree"`
+	Scope        string     `json:"scope"`
+	Trees        []*BH3Tree `json:"trees"`
 }
 
 // B3File 是behavior3编辑器保存的.b3格式的配置文件
@@ -119,34 +119,52 @@ func (node *BH3Node) GetBool(name string) bool {
 
 func (node *BH3Node) GetInt32s(name string) []int32 {
 	var ret []int32
-	v := (node.Properties[name]).(string)
-	if v == "" {
+	v := node.Properties[name]
+	if v == nil {
 		return nil
 	}
-	lst := strings.Split(v, ",")
-	for _, val := range lst {
-		n, err := strconv.Atoi(val)
-		if err != nil {
-			panic(fmt.Errorf("failed to unmarshal int32s: %v", err))
+	switch val := v.(type) {
+	case string:
+		if v == "" {
+			return nil
 		}
-		ret = append(ret, int32(n))
+		lst := strings.Split(val, ",")
+		for _, val := range lst {
+			n, err := strconv.Atoi(val)
+			if err != nil {
+				panic(fmt.Errorf("failed to unmarshal int32s: %v", err))
+			}
+			ret = append(ret, int32(n))
+		}
+	case float64:
+		ret = append(ret, int32(val))
 	}
+
 	return ret
 }
 
 func (node *BH3Node) GetInt64s(name string) []int64 {
 	var ret []int64
-	v := (node.Properties[name]).(string)
-	if v == "" {
+	v := node.Properties[name]
+	if v == nil {
 		return nil
 	}
-	lst := strings.Split(v, ",")
-	for _, val := range lst {
-		n, err := strconv.ParseInt(val, 10, 64)
-		if err != nil {
-			panic(fmt.Errorf("failed to unmarshal int32s: %v", err))
+	switch val := v.(type) {
+	case string:
+		if v == "" {
+			return nil
 		}
-		ret = append(ret, n)
+		lst := strings.Split(val, ",")
+		for _, val := range lst {
+			n, err := strconv.Atoi(val)
+			if err != nil {
+				panic(fmt.Errorf("failed to unmarshal int64s: %v", err))
+			}
+			ret = append(ret, int64(n))
+		}
+	case float64:
+		ret = append(ret, int64(val))
 	}
+
 	return ret
 }

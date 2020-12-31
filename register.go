@@ -7,8 +7,6 @@ import (
 	"github.com/pkg/errors"
 )
 
-type nodeTypeMap map[string]reflect.Type
-
 var (
 	typeMap = make(map[string]reflect.Type)
 )

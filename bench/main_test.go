@@ -73,7 +73,7 @@ type projTestSuite struct {
 }
 
 func (suite *projTestSuite) SetupSuite() {
-
+	behavior.Register("CalcAction", &CalcAction{})
 }
 
 func (suite *projTestSuite) TestParseProj() {
@@ -84,14 +84,19 @@ func (suite *projTestSuite) TestParseProj() {
 	mgr, err := behavior.NewBehaviorManager(&bh3prj.Data)
 	suite.Nil(err, "create manager from project")
 
-	tree := mgr.SelectBehaviorTree("A behavior tree")
+	tree := mgr.SelectBehaviorTree("single")
 	suite.NotNil(tree, "select tree")
+	suite.Equal("{Sequenece: {CalcAction: Action,TickTimes: Condition}}", tree.String(), "check tree string")
 
+	parent := mgr.SelectBehaviorTree("parent")
+	suite.NotNil(parent, "select tree")
+
+	suite.Equal("{Selector: {Sequenece: {CalcAction: Action,TickTimes: Condition}}}", parent.String(), "check parent string")
 }
 
-// func TestBehavior3Proj(t *testing.T) {
-// 	suite.Run(t, &projTestSuite{})
-// }
+func TestBehavior3Proj(t *testing.T) {
+	suite.Run(t, &projTestSuite{})
+}
 
 func loadPrj() []byte {
 	data, err := ioutil.ReadFile("./bench.b3")
